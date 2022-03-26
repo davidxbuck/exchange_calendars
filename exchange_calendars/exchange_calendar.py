@@ -168,7 +168,7 @@ class ExchangeCalendar(ABC):
         "left" - treat session open and break_start as trading minutes,
             do not treat session close or break_end as trading minutes.
         "right" - treat session close and break_end as trading minutes,
-            do not treat session open or break_start as tradng minutes.
+            do not treat session open or break_start as trading minutes.
         "both" - treat all of session open, session close, break_start
             and break_end as trading minutes.
         "neither" - treat none of session open, session close,
@@ -197,7 +197,7 @@ class ExchangeCalendar(ABC):
 
     Many calendars do not have bounds defined (in these cases `bound_start`
     and/or `bound_end` return None). These calendars can be created through
-    any date range although it should be noted that the earlier the start
+    any date range, although it should be noted that the earlier the start
     date, the greater the potential for inaccuracies.
 
     In all cases, no guarantees are offered as to the accuracy of any
@@ -331,7 +331,7 @@ class ExchangeCalendar(ABC):
         self._early_closes = _special_closes.index
 
     # Methods and properties that define calendar and which should be
-    # overriden or extended, if and as required, by subclass.
+    # overridden or extended, if and as required, by subclass.
 
     @abstractproperty
     def name(self) -> str:
@@ -427,7 +427,7 @@ class ExchangeCalendar(ABC):
     @property
     def break_start_times(self):
         """
-        Returns a optional list of tuples of (start_date, break_start_time).
+        Returns an optional list of tuples of (start_date, break_start_time).
         If the break start time is constant throughout the calendar, use None
         for the start_date. If there is no break, return `None`.
         """
@@ -436,7 +436,7 @@ class ExchangeCalendar(ABC):
     @property
     def break_end_times(self):
         """
-        Returns a optional list of tuples of (start_date, break_end_time).  If
+        Returns an optional list of tuples of (start_date, break_end_time).  If
         the break end time is constant throughout the calendar, use None for
         the start_date. If there is no break, return `None`.
         """
@@ -564,9 +564,9 @@ class ExchangeCalendar(ABC):
         """
         return []
 
-    # ------------------------------------------------------------------
-    # -- NO method below this line should be overriden on a subclass! --
-    # ------------------------------------------------------------------
+    # -------------------------------------------------------------------
+    # -- NO method below this line should be overridden on a subclass! --
+    # -------------------------------------------------------------------
 
     # Methods and properties that define calendar (continued...).
 
@@ -1263,7 +1263,7 @@ class ExchangeCalendar(ABC):
         session_idx = np.searchsorted(self.first_minutes_nanos, minute.value) - 1
         break_start = self.last_am_minutes_nanos[session_idx]
         break_end = self.first_pm_minutes_nanos[session_idx]
-        # NaT comparisions evalute as False
+        # NaT comparisons evaluate as False
         numpy_bool = break_start < minute.value < break_end
         return bool(numpy_bool)
 
@@ -1367,7 +1367,7 @@ class ExchangeCalendar(ABC):
         return pd.Timestamp(self.closes_nanos[idx], tz=UTC)
 
     def previous_open(self, dt: Minute, _parse: bool = True) -> pd.Timestamp:
-        """Return previous open that preceeds a given minute.
+        """Return previous open that precedes a given minute.
 
         If `dt` is a session open, the previous session's open will be
         returned.
@@ -1398,7 +1398,7 @@ class ExchangeCalendar(ABC):
         return pd.Timestamp(self.opens_nanos[idx], tz=UTC)
 
     def previous_close(self, dt: Minute, _parse: bool = True) -> pd.Timestamp:
-        """Return previous close that preceeds a given minute.
+        """Return previous close that precedes a given minute.
 
         If `dt` is a session close, the previous session's close will be
         returned.
@@ -1456,7 +1456,7 @@ class ExchangeCalendar(ABC):
         return self.minutes[idx]
 
     def previous_minute(self, dt: Minute, _parse: bool = True) -> pd.Timestamp:
-        """Return trading minute that immediately preceeds a given minute.
+        """Return trading minute that immediately precedes a given minute.
 
         Parameters
         ----------
@@ -1589,7 +1589,7 @@ class ExchangeCalendar(ABC):
 
         Returns
         -------
-        pd.Timstamp
+        pd.Timestamp
             Session that is `count` full sessions before `minute`.
 
         See Also
@@ -1635,7 +1635,7 @@ class ExchangeCalendar(ABC):
 
         Returns
         -------
-        pd.Timstamp
+        pd.Timestamp
             Session that is `count` full sessions after `minute`.
 
         See Also
@@ -1673,11 +1673,11 @@ class ExchangeCalendar(ABC):
             Timestamp to be resolved to a trading minute.
 
         direction:
-            How to resolve `minute` if does not represent a trading minute:
+            How to resolve `minute` if it does not represent a trading minute:
                 'next' - return trading minute that immediately follows
                     `minute`.
                 'previous' - return trading minute that immediately
-                    preceeds `minute`.
+                    precedes `minute`.
                 'none' - raise KeyError
 
         Returns
@@ -1685,7 +1685,7 @@ class ExchangeCalendar(ABC):
         pd.Timestamp
             Returns `minute` if `minute` is a trading minute otherwise
             first trading minute that, in accordance with `direction`,
-            either immediately follows or preceeds `minute`.
+            either immediately follows or precedes `minute`.
 
         Raises
         ------
@@ -1694,7 +1694,7 @@ class ExchangeCalendar(ABC):
 
         See Also
         --------
-        next_mintue
+        next_minute
         previous_minute
         """
         if _parse:
@@ -1804,7 +1804,7 @@ class ExchangeCalendar(ABC):
             # this guard is necessary as minute can be for a different session than the
             # intended if the gap between sessions is less than any difference in the
             # open or close times (i.e. only relevant if base and target sessions have
-            # different open/close times.
+            # different open/close times).
             if self.minute_to_session(minute, _parse=False) == target_session:
                 return minute
         first_minute = self.session_first_minute(target_session, _parse=False)
@@ -1885,7 +1885,7 @@ class ExchangeCalendar(ABC):
                 f" {count - (end_idx - len(self.minutes_nanos) + 1)} for"
                 f" `start` '{start_dt}'."
             )
-        return self.minutes[min(start_idx, end_idx) : max(start_idx, end_idx) + 1]
+        return self.minutes[min(start_idx, end_idx): max(start_idx, end_idx) + 1]
 
     def minutes_distance(self, start: Minute, end: Minute, _parse: bool = True) -> int:
         """Return the number of minutes in a range.
@@ -1934,7 +1934,7 @@ class ExchangeCalendar(ABC):
         Raises
         ------
         ValueError
-            If any indice of `minute` is not a trading minute.
+            If any index of `minute` is not a trading minute.
         """
         if not minutes.is_monotonic_increasing:
             raise ValueError("`index` must be ordered.")
@@ -2061,7 +2061,7 @@ class ExchangeCalendar(ABC):
                 f" {count - (end_idx - len(self.sessions) + 1)} for"
                 f" `session` '{session_label}'."
             )
-        return self.sessions[min(start_idx, end_idx) : max(start_idx, end_idx) + 1]
+        return self.sessions[min(start_idx, end_idx): max(start_idx, end_idx) + 1]
 
     def sessions_distance(self, start: Date, end: Date, _parse: bool = True) -> int:
         """Return the number of sessions in a range.
@@ -2209,7 +2209,7 @@ class ExchangeCalendar(ABC):
         longer the range of dates covered and/or the shorter the period
         (i.e. higher the frequency), the longer the execution. Whilst an
         index with 4000 indices might be created in a couple of
-        miliseconds, a high frequency index with 2 million indices might
+        milliseconds, a high frequency index with 2 million indices might
         take a second or two.
 
         Parameters
@@ -2238,7 +2238,7 @@ class ExchangeCalendar(ABC):
             representing explicit intervals.
 
             False to return trading index as a pd.DatetimeIndex with
-            indices that implicitely represent a period according to
+            indices that implicitly represent a period according to
             `closed`.
 
             If `period` is '1d' then trading index will be returned as a
@@ -2252,7 +2252,7 @@ class ExchangeCalendar(ABC):
             session must belong to one interval and one interval only).
 
             If `intervals` is False, the side of each period that an
-            indice should be defined. The first and last indices of each
+            index should be defined. The first and last indices of each
             (sub)session will be defined according to:
                 "left" - include left side of first period, do not include
                     right side of last period.
@@ -2263,7 +2263,7 @@ class ExchangeCalendar(ABC):
                 "neither" - do not include either left side of first period
                     or right side of last period.
             NB if `period` is not a factor of the (sub)session length then
-            "right" or "both" will result in an indice being defined after
+            "right" or "both" will result in an index being defined after
             the (sub)session close. See `force_close` and
             `force_break_close`.
 
@@ -2354,13 +2354,13 @@ class ExchangeCalendar(ABC):
         ------
         exchange_calendars.errors.IntervalsOverlapError
             If `intervals` is True and right side of one or more indices
-            would fall after the left of the subsequent indice. This can
+            would fall after the left of the subsequent index. This can
             occur if `period` is longer than a break or the gap between one
             session's close and the next session's open.
 
         exchange_calendars.errors.IntervalsOverlapError
-            If `intervals` is False and an indice would otherwise fall to
-            the right of the subsequent indice. This can occur if `period`
+            If `intervals` is False and an index would otherwise fall to
+            the right of the subsequent index. This can occur if `period`
             is longer than a break or the gap between one session's close
             and the next session's open.
 
@@ -2376,7 +2376,7 @@ class ExchangeCalendar(ABC):
                 period = pd.Timedelta(period)
             except ValueError:
                 msg = (
-                    f"`period` receieved as '{period}' although takes type"
+                    f"`period` received as '{period}' although takes type"
                     " 'pd.Timedelta' or a type 'str' that is valid as a single input"
                     " to 'pd.Timedelta'. Examples of valid input: pd.Timestamp('15T'),"
                     " '15min', '15T', '1H', '4h', '1d', '5s', 500ms'."
@@ -2479,7 +2479,7 @@ class ExchangeCalendar(ABC):
         # end_date */12/31 00:00 then */12/31 12:30 would be excluded.
         end_rng = end_date + pd.Timedelta(1, "D")
         result = result.loc[(result >= start_date) & (result < end_rng)]
-        # exclude any special date that conincides with a holiday
+        # exclude any special date that coincides with a holiday
         adhoc_holidays = pd.DatetimeIndex(self.adhoc_holidays, tz="UTC")
         result = result[~result.index.isin(adhoc_holidays)]
         reg_holidays = self.regular_holidays.holidays(
@@ -2556,7 +2556,7 @@ class ExchangeCalendar(ABC):
         indexer = session_labels.get_indexer(offsets.index)
 
         # -1 indicates that no corresponding entry was found.  If any -1s are
-        # present, then we have special dates that doesn't correspond to any
+        # present, then we have special dates that don't correspond to any
         # trading day.
         if -1 in indexer and strict:
             bad_dates = list(offsets.index[indexer == -1])
@@ -2905,7 +2905,7 @@ def _overwrite_special_dates(session_labels, opens_or_closes, special_opens_or_c
     indexer = session_labels.get_indexer(special_opens_or_closes.index)
 
     # -1 indicates that no corresponding entry was found.  If any -1s are
-    # present, then we have special dates that doesn't correspond to any
+    # present, then we have special dates that don't correspond to any
     # trading day.
     if -1 in indexer:
         bad_dates = list(special_opens_or_closes[indexer == -1])
@@ -2945,7 +2945,7 @@ def _remove_breaks_for_special_dates(
     indexer = session_labels.get_indexer(special_opens_or_closes.index)
 
     # -1 indicates that no corresponding entry was found.  If any -1s are
-    # present, then we have special dates that doesn't correspond to any
+    # present, then we have special dates that don't correspond to any
     # trading day.
     if -1 in indexer:
         bad_dates = list(special_opens_or_closes[indexer == -1])

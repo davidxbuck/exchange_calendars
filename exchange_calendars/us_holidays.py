@@ -174,12 +174,25 @@ USElectionDay1968to1980 = Holiday(
     end_date=Timestamp("1980-12-31"),
     observance=following_tuesday_every_four_years_observance,
 )
+USVeteransDay = Holiday(
+    "Veteran Day",
+    month=11,
+    day=11,
+    start_date=Timestamp("1934-1-1"),
+    observance=sunday_to_monday,
+)
 USVeteransDay1934to1953 = Holiday(
     "Veteran Day",
     month=11,
     day=11,
     start_date=Timestamp("1934-1-1"),
     end_date=Timestamp("1953-12-31"),
+    observance=sunday_to_monday,
+)
+USColumbusDay = Holiday(
+    "Columbus Day",
+    month=10,
+    day=12,
     observance=sunday_to_monday,
 )
 USColumbusDayBefore1954 = Holiday(

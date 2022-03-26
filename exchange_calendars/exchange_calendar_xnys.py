@@ -44,6 +44,7 @@ from .us_holidays import (
     September11Closings,
     USBlackFridayBefore1993,
     USBlackFridayInOrAfter1993,
+    USColumbusDay,
     USColumbusDayBefore1954,
     USElectionDay1848to1967,
     USElectionDay1968to1980,
@@ -61,6 +62,7 @@ from .us_holidays import (
     USThanksgivingDay,
     USThanksgivingDay1939to1941,
     USThanksgivingDayBefore1939,
+    USVeteransDay,
     USVeteransDay1934to1953,
     USWashingtonsBirthDay1964to1970,
     USWashingtonsBirthDayBefore1964,
@@ -103,7 +105,8 @@ class XNYSExchangeCalendar(ExchangeCalendar):
     - Christmas (December 25th, Sunday to Monday, before 1954)
     - Christmas (observed on nearest weekday to December 25, after 1953)
 
-    NOTE: The NYSE does not observe the following US Federal Holidays:
+    NOTE: The NYSE does not observe the following US Federal Holidays, however
+    as banking institutions are closed, no settlement takes place on these days:
     - Columbus Day (after 1953)
     - Veterans Day (after 1953)
 
@@ -188,6 +191,36 @@ class XNYSExchangeCalendar(ExchangeCalendar):
                 USElectionDay1968to1980,
                 USVeteransDay1934to1953,
                 USColumbusDayBefore1954,
+                ChristmasBefore1954,
+                Christmas,
+            ]
+        )
+
+    @property
+    def settlement_holidays(self):
+        return HolidayCalendar(
+            [
+                USNewYearsDay,
+                USMartinLutherKingJrAfter1998,
+                USLincolnsBirthDayBefore1954,
+                USWashingtonsBirthDayBefore1964,
+                USWashingtonsBirthDay1964to1970,
+                USPresidentsDay,
+                GoodFriday,
+                USMemorialDayBefore1964,
+                USMemorialDay1964to1969,
+                USMemorialDay,
+                USJuneteenth,
+                USIndependenceDayBefore1954,
+                USIndependenceDay,
+                USLaborDay,
+                USThanksgivingDayBefore1939,
+                USThanksgivingDay1939to1941,
+                USThanksgivingDay,
+                USElectionDay1848to1967,
+                USElectionDay1968to1980,
+                USVeteransDay,
+                USColumbusDay,
                 ChristmasBefore1954,
                 Christmas,
             ]

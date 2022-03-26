@@ -135,7 +135,7 @@ def parse_timestamp(
 
     calendar
         ExchangeCalendar against which to evaluate out-of-bounds
-        timestamps. Only requried if `raise_oob` True of if relying on
+        timestamps. Only required if `raise_oob` True of if relying on
         `calendar` for `side`.
 
     raise_oob : default: True
@@ -178,7 +178,7 @@ def parse_timestamp(
             ts = pd.Timestamp(timestamp)
         except Exception as e:
             msg = (
-                f"Parameter `{param_name}` receieved as '{timestamp}' although"
+                f"Parameter `{param_name}` received as '{timestamp}' although"
                 f" a Date or Minute must be passed as a pd.Timestamp or a"
                 f" valid single-argument input to pd.Timestamp."
             )
@@ -269,8 +269,8 @@ def parse_date(
          Name of a parameter that was to receive a date.
 
     calendar
-        ExchangeCalendar against which to evalute out-of-bounds dates.
-        Only requried if `raise_oob` True.
+        ExchangeCalendar against which to evaluate out-of-bounds dates.
+        Only required if `raise_oob` True.
 
     raise_oob : default: True
         True to raise DateOutOfBounds if `date` is earlier than the
@@ -297,7 +297,7 @@ def parse_date(
         `calendar`'s last session.
     """
     # side "left" to get it through 'second' handling. Has undesirable effect of
-    # allowing `date` to be defined with a second (or more accurate) compoment
+    # allowing `date` to be defined with a second (or more accurate) component
     # if it falls within the minute that follows midnight.
     ts = parse_timestamp(date, param_name, raise_oob=False, side="left", utc=False)
 
@@ -495,7 +495,7 @@ class _TradingIndex:
             num_indices -= 1
 
         # by session, evaluate a range of int such that indices of a session
-        # could be evaluted from [ session_open + (freq * i) for i in range ]
+        # could be evaluated from [ session_open + (freq * i) for i in range ]
         start = 0 if self.closed_left else 1
         func = np.vectorize(lambda stop: np.arange(start, stop), otypes=[np.ndarray])
         stop = num_indices if self.closed_left else num_indices + 1

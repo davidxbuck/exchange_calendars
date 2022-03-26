@@ -121,6 +121,7 @@ _default_calendar_factories = {
 _default_calendar_aliases = {
     "NYSE": "XNYS",
     "NASDAQ": "XNYS",
+    "XNAS": "XNYS",
     "BATS": "XNYS",
     "FWB": "XFRA",
     "LSE": "XLON",
@@ -266,7 +267,7 @@ class ExchangeCalendarDispatcher(object):
         if name in self._calendars:
             if kwargs:
                 raise ValueError(
-                    f"Receieved calendar arguments although {name} is registered"
+                    f"Received calendar arguments although {name} is registered"
                     f" as a specific instance of class"
                     f" {self._calendars[name].__class__}, not as a calendar factory."
                 )
@@ -288,7 +289,7 @@ class ExchangeCalendarDispatcher(object):
     def get_calendar_names(
         self, include_aliases: bool = True, sort: bool = True
     ) -> list[str]:
-        """Return all canoncial calendar names and, optionally, aliases.
+        """Return all canonical calendar names and, optionally, aliases.
 
         Parameters
         ----------
@@ -306,8 +307,8 @@ class ExchangeCalendarDispatcher(object):
 
         See Also
         --------
-        names_to_aliases : Mapping of cononcial names to aliases.
-        aliases_to_names : Mapping of aliases to canoncial names.
+        names_to_aliases : Mapping of canonical names to aliases.
+        aliases_to_names : Mapping of aliases to canonical names.
         resolve_alias : Resolve single alias to a canonical name.
         """
         keys = set(self._calendar_factories.keys()).union(set(self._calendars.keys()))
@@ -426,14 +427,14 @@ class ExchangeCalendarDispatcher(object):
             raise
 
     def resolve_alias(self, name: str):
-        """Resolve an alias to cononcial name of corresponding calendar.
+        """Resolve an alias to canonical name of corresponding calendar.
 
-        A cononical name will resolve to itself.
+        A canonical name will resolve to itself.
 
         Parameters
         ----------
         name :
-            Alias or canoncial name corresponding to a calendar.
+            Alias or canonical name corresponding to a calendar.
 
         Returns
         -------
@@ -448,8 +449,8 @@ class ExchangeCalendarDispatcher(object):
 
         See Also
         --------
-        aliases_to_names : Mapping of aliases to canoncial names.
-        names_to_aliases : Mapping of cononcial names to aliases.
+        aliases_to_names : Mapping of aliases to canonical names.
+        names_to_aliases : Mapping of canonical names to aliases.
         """
         if name not in self.get_calendar_names(include_aliases=True, sort=False):
             raise InvalidCalendarName(calendar_name=name)
@@ -474,13 +475,13 @@ class ExchangeCalendarDispatcher(object):
         Returns
         -------
         dict of {str, str}
-            Dictionary mapping aliases to canoncial name of corresponding
+            Dictionary mapping aliases to canonical name of corresponding
             calendar.
 
         See Also
         --------
         resolve_alias : Resolve single alias to a canonical name.
-        names_to_aliases : Mapping of cononcial names to aliases.
+        names_to_aliases : Mapping of canonical names to aliases.
         """
         return {alias: self.resolve_alias(alias) for alias in self._aliases}
 
@@ -495,7 +496,7 @@ class ExchangeCalendarDispatcher(object):
 
         See Also
         --------
-        aliases_to_names : Mapping of aliases to canoncial names.
+        aliases_to_names : Mapping of aliases to canonical names.
         """
         names = self.get_calendar_names(include_aliases=False)
         dic = {name: [] for name in names}
